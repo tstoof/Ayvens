@@ -125,7 +125,7 @@ const handleEnter = () => {
 
 
     .button {
-        border: 1px solid grey;
+        border: 1px solid rgb(138, 137, 137);
         background-color: whitesmoke;
         cursor: pointer;
         text-align: center;
