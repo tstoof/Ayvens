@@ -10,6 +10,7 @@ const buttonsDisabled = ref(false)
 const operatorsList = ['(', ')', '+', '-', '%', '*', '/']
 const resultHistory: any[] = []
 const showNumber = ref('0')
+const numericalResultHistory = ref<number[]>([])
 
 const handleClick = (value: string) => {
     const lastChar = result.value[result.value.length - 1]  
@@ -27,6 +28,7 @@ const handleClick = (value: string) => {
             const historyEntry =`${result.value} = ${computed}`
             resultHistory.push(historyEntry)
             result.value = computed   
+            numericalResultHistory.value.push(Number(computed))
             showNumber.value = computed      
         }
         catch (error) {
@@ -98,6 +100,9 @@ const handleHistorySelection = (selected: string) => {
             />           
         </div>
     </div>
+
+
+    <!-- {{numericalResultHistory.toString()}} -->
 </template>
 
 <style scoped>
