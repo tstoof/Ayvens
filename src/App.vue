@@ -28,7 +28,11 @@ const handleClick = (value: string) => {
             const computed = eval(result.value).toString()  
             const historyEntry =`${result.value} = ${computed}`
             resultHistory.push(historyEntry)
-            result.value = computed           
+            result.value = computed   
+            setTimeout(() => {
+                result.value = '0'
+                buttonsDisabled.value = false
+            }, 1000)        
         }
         catch (error) {
             result.value = "Error"
@@ -72,7 +76,10 @@ const setResult = (val: string) => {
           :buttonsDisabled="buttonsDisabled"
         />
 
-        <History :resultHistory="resultHistory"/>
+        <History 
+          :resultHistory="resultHistory" 
+          @updateResult="result = $event" 
+        />
 
         <div id="buttons_container">
             <Buttons
@@ -90,7 +97,7 @@ const setResult = (val: string) => {
     #calculator_background {
         border: 0.5px grey solid;
         padding-bottom: 30px;
-        padding-top: 100px;
+        padding-top: 30px;
         padding-left: 30px;
         padding-right: 30px;
         background-color: cadetblue;
