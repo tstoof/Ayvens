@@ -9,16 +9,14 @@ const buttons = ['(', ')', '%', 'CE', '7', '8', '9','/','4', '5', '6','*','1', '
 const buttonsDisabled = ref(false)
 const operatorsList = ['(', ')', '+', '-', '%', '*', '/']
 const resultHistory: any[] = []
+const showNumber = ref('0')
 
 const handleClick = (value: string) => {
     const lastChar = result.value[result.value.length - 1]  
     
-    if (lastChar === '=') {
-        result.value = '0'
-    }
-
     if (value === "CE") {
         result.value = "0"
+        showNumber.value = '0'
         return
     }
 
@@ -29,16 +27,15 @@ const handleClick = (value: string) => {
             const historyEntry =`${result.value} = ${computed}`
             resultHistory.push(historyEntry)
             result.value = computed   
-            setTimeout(() => {
-                result.value = '0'
-                buttonsDisabled.value = false
-            }, 1000)        
+            showNumber.value = computed      
         }
         catch (error) {
             result.value = "Error"
+            showNumber.value = "Error"
             buttonsDisabled.value = true
             setTimeout(() => {
                 result.value = '0'
+                showNumber.value = '0'
                 buttonsDisabled.value = false
             }, 1000)
         }
@@ -50,7 +47,9 @@ const handleClick = (value: string) => {
             result.value = result.value.slice(0,-1) + value
         } else {
             result.value += value
+            
         }
+        showNumber.value = value
         return
     }
 
@@ -60,10 +59,17 @@ const handleClick = (value: string) => {
     else if (value !== "=") {
         result.value += value
     }
+    showNumber.value = value
 }
  
 const setResult = (val: string) => {
   result.value = val
+  showNumber.value = val
+}
+
+const handleHistorySelection = (selected: string) => {
+  result.value = selected
+  showNumber.value = selected
 }
 
 </script>
@@ -72,13 +78,14 @@ const setResult = (val: string) => {
     <div id="calculator_background">
         <Screen
           :result="result"
+          :showNumber="showNumber"
           :setResult="setResult"
           :buttonsDisabled="buttonsDisabled"
         />
 
         <History 
           :resultHistory="resultHistory" 
-          @updateResult="result = $event" 
+          @updateResult="handleHistorySelection" 
         />
 
         <div id="buttons_container">

@@ -3,6 +3,7 @@ import { defineProps } from 'vue'
 
 const props = defineProps<{
     result: string
+    showNumber: string
     setResult: (val: string) => void
     buttonsDisabled: boolean
 }>()
@@ -27,7 +28,7 @@ const handleInput = (e: Event) => {
   <input
     id="screen"
     type="text"
-    :value="props.result"
+    :value="props.showNumber"
     @input="handleInput"
     @keyup.enter="handleEnter"
     :disabled="props.buttonsDisabled"
