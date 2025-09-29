@@ -17,6 +17,15 @@
         }
     }   
 
+    const handleInput = (e: Event) => {
+        const target = e.target as HTMLInputElement
+        target.value = target.value.replace(/,/g, '.')
+        result.value = target.value
+        if (result.value.length === 0) {
+            result.value = "0"
+        }
+    }
+
 </script>
 
 <template>
@@ -24,6 +33,7 @@
     <input id="screen" 
         type="text" 
         v-model="result"
+        @input="handleInput"
         @keyup.enter="handleEnter"        
     />
    
