@@ -1,56 +1,49 @@
 <script setup lang="ts">
-    import { ref } from 'vue'
+import { defineProps } from 'vue'
 
-    const result = ref('0')
-    const buttonsDisabled = ref(false)
+const props = defineProps<{
+    result: string
+    setResult: (val: string) => void
+    buttonsDisabled: boolean
+}>()
 
-    const handleEnter = () => {
-        try {
-            result.value = eval(result.value).toString()
-        } catch {
-            result.value = 'Error'
-            buttonsDisabled.value = true
-            setTimeout(() => {
-                result.value = '0'
-                buttonsDisabled.value = false
-            }, 1000)
-        }
-    }   
-
-    const handleInput = (e: Event) => {
-        const target = e.target as HTMLInputElement
-        target.value = target.value.replace(/,/g, '.')
-        result.value = target.value
-        if (result.value.length === 0) {
-            result.value = "0"
-        }
+const handleEnter = () => {
+    try {
+        props.setResult(eval(props.result).toString())
+    } catch {
+        props.setResult('Error')
+        setTimeout(() => props.setResult('0'), 1000)
     }
+}
 
+const handleInput = (e: Event) => {
+    const target = e.target as HTMLInputElement
+    const newValue = target.value.replace(/,/g, '.')
+    props.setResult(newValue)
+}
 </script>
 
 <template>
-     
-    <input id="screen" 
-        type="text" 
-        v-model="result"
-        @input="handleInput"
-        @keyup.enter="handleEnter"        
-    />
-   
+  <input
+    id="screen"
+    type="text"
+    :value="props.result"
+    @input="handleInput"
+    @keyup.enter="handleEnter"
+    :disabled="props.buttonsDisabled"
+  />
 </template>
 
 <style scoped>
-
-    #screen {
-        background-color: beige;
-        width: 250px;
-        position: relative;
-        height: 70px;
-        top: -60px;
-        font-size: 25px;
-        text-align: right;
-        padding-right: 10px;
-        border-radius: 5%;
-    }    
-
+#screen {
+  background-color: beige;
+  width: 250px;
+  height: 70px;
+  font-size: 25px;
+  text-align: right;
+  padding-right: 10px;
+  border-radius: 5%;
+  border: 1px solid rgb(138, 137, 137);
+  margin-bottom: 20px;
+}
 </style>

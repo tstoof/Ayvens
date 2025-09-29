@@ -2,11 +2,13 @@
 import { ref } from 'vue'
 import Buttons from './components/Buttons.vue'
 import Screen from './components/Screen.vue'
+import History from './components/History.vue'
 
 const result = ref('0')
 const buttons = ['(', ')', '%', 'CE', '7', '8', '9','/','4', '5', '6','*','1', '2', '3','-', '0', '.', '=', '+' ]
 const buttonsDisabled = ref(false)
 const operatorsList = ['(', ')', '+', '-', '%', '*', '/']
+const resultHistory: any[] = []
 
 const handleClick = (value: string) => {
     const lastChar = result.value[result.value.length - 1]  
@@ -23,7 +25,10 @@ const handleClick = (value: string) => {
     if (value === "=") {
 
         try {
-            result.value = eval(result.value).toString()  
+            const computed = eval(result.value).toString()  
+            const historyEntry =`${result.value} = ${computed}`
+            resultHistory.push(historyEntry)
+            result.value = computed           
         }
         catch (error) {
             result.value = "Error"
@@ -53,27 +58,31 @@ const handleClick = (value: string) => {
     }
 }
  
-
+const setResult = (val: string) => {
+  result.value = val
+}
 
 </script>
 
 <template>
     <div id="calculator_background">
-        <Screen/>
+        <Screen
+          :result="result"
+          :setResult="setResult"
+          :buttonsDisabled="buttonsDisabled"
+        />
+
+        <History :resultHistory="resultHistory"/>
+
         <div id="buttons_container">
-            <div 
-                class="button" 
-                v-for="(button, index) in buttons"
-                :key="index"
-                @click="handleClick(button)"
-                :style="{pointerEvents: buttonsDisabled?'none': 'auto', opacity: buttonsDisabled ? 0.5 : 1 }"
-            >
-                <Buttons :operator="button"/>
-            </div>
+            <Buttons
+              v-for="(button, index) in buttons"
+              :key="index"
+              :operator="button"
+              :style="{pointerEvents: buttonsDisabled?'none': 'auto', opacity: buttonsDisabled ? 0.5 : 1 }"
+              @click="handleClick(button)"
+            />           
         </div>
-        
-
-
     </div>
 </template>
 

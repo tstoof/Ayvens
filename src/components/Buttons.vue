@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  operator: string
-}>()
+  const props = defineProps<{
+    operator: string
+  }>()
 
-// Define which symbols are operators
-const operatorSymbols = ['+', '-', '*', '/', '%', '(', ')']
+  const operatorSymbols = ['+', '-', '*', '/', '%', '(', ')']
 </script>
 
 <template>
