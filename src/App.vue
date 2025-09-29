@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import Buttons from './components/Buttons.vue'
 import Screen from './components/Screen.vue'
-import ButtonsContainer from './components/ButtonsContainer.vue'
 
 const result = ref('0')
 const buttons = ['(', ')', '%', 'CE', '7', '8', '9','/','4', '5', '6','*','1', '2', '3','-', '0', '.', '=', '+' ]
